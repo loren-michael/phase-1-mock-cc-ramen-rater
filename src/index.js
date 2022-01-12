@@ -4,7 +4,7 @@
     //✅ When the page loads, request the data from the server to get all the ramen objects.
     //✅ Then, display the image for each of the ramen using an img tag inside the #ramen-menu div.
 
-// Click on an image from the #ramen-menu div and see all the info about that ramen displayed inside the #ramen-detail div and where it says insert comment here and insert rating here.
+//✅ Click on an image from the #ramen-menu div and see all the info about that ramen displayed inside the #ramen-detail div and where it says insert comment here and insert rating here.
 
 // Create a new ramen after submitting the new-ramen form.
     // The new ramen should be added to the#ramen-menu div.
@@ -17,12 +17,18 @@
 
 
 const baseURL = 'http://localhost:3000';
-const baseURLRamens = 'http://localhost:3000/ramens'
-const ramenMenu = document.getElementById("ramen-menu")
-// console.log(ramenMenu)
+const baseURLRamens = 'http://localhost:3000/ramens';
+const ramenMenu = document.getElementById("ramen-menu");
+const ramenDetail = document.getElementById("ramen-detail");
+const detailImage = document.querySelector(".detail-image");
+const detailName = document.querySelector(".name");
+const detailRestaurant = document.querySelector(".restaurant");
+const detailRating = document.querySelector("#rating-display");
+const detailComment = document.querySelector("#comment-display");
+const newRamenForm = document.querySelector("#new-ramen");
 
 
-// DOMContentLoaded
+// console.log(detailRating)
 
 
 
@@ -34,6 +40,11 @@ function getRamens() {
     .then(renderAllRamens)
 }
 
+function getDetails(e) {
+    fetch (baseURLRamens + `/${e.target.id}`)
+    .then(resp => resp.json())
+    .then(ramenObj => renderDetails(ramenObj))
+}
 
 
 
@@ -49,7 +60,18 @@ function renderOneRamen(ramenObj) {
     const ramenDiv = document.createElement("img");
     // console.log(ramenObj)
     ramenDiv.src = ramenObj.image;
+    ramenDiv.id = ramenObj.id;
+    ramenDiv.addEventListener('click', getDetails)
     ramenMenu.append(ramenDiv)
+}
+
+function renderDetails(ramenObj) {
+    // console.log(ramenObj)
+    detailImage.src = ramenObj.image;
+    detailName.innerText = ramenObj.name;
+    detailRestaurant.innerText = ramenObj.restaurant;
+    detailRating.innerText = ramenObj.rating;
+    detailComment.innerText = ramenObj.comment;
 }
 
 
